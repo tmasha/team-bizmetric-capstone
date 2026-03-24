@@ -21,13 +21,8 @@ export default function Navbar() {
         <nav className="nav-links">
           {links.map((link) => {
             const Icon = link.icon;
-
             return (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-              >
+              <NavLink key={link.to} to={link.to} className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
                 <Icon size={15} />
                 <span>{link.label}</span>
               </NavLink>

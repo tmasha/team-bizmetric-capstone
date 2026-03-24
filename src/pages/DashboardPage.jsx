@@ -91,7 +91,6 @@ export default function DashboardPage() {
       <section className="cards-grid metrics-grid">
         {metrics.map((metric) => {
           const Icon = metric.icon;
-
           return (
             <article key={metric.label} className="card metric-card">
               <h3>{metric.label}</h3>
@@ -126,22 +125,8 @@ export default function DashboardPage() {
                 <YAxis stroke="#6B7280" />
                 <Tooltip />
                 <Legend />
-                <Area
-                  type="monotone"
-                  dataKey="successful"
-                  stroke="#10B981"
-                  fill="#10B981"
-                  fillOpacity={0.45}
-                  name="Successful"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="failed"
-                  stroke="#EF4444"
-                  fill="#EF4444"
-                  fillOpacity={0.45}
-                  name="Failed"
-                />
+                <Area type="monotone" dataKey="successful" stroke="#10B981" fill="#10B981" fillOpacity={0.45} name="Successful" />
+                <Area type="monotone" dataKey="failed" stroke="#EF4444" fill="#EF4444" fillOpacity={0.45} name="Failed" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -152,15 +137,7 @@ export default function DashboardPage() {
           <div className="chart-shell pie-wrap">
             <ResponsiveContainer width="50%" height={280}>
               <PieChart>
-                <Pie
-                  data={policyData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={52}
-                  outerRadius={92}
-                  paddingAngle={3}
-                  dataKey="value"
-                >
+                <Pie data={policyData} cx="50%" cy="50%" innerRadius={52} outerRadius={92} paddingAngle={3} dataKey="value">
                   {policyData.map((entry, index) => (
                     <Cell key={`policy-${index}`} fill={entry.color} />
                   ))}
@@ -187,31 +164,14 @@ export default function DashboardPage() {
         <h3>System Architecture</h3>
         <p className="muted">Azure AI Governance Platform infrastructure overview.</p>
         <div className="flow-row architecture-row">
-          <span>
-            <Users size={18} />
-            Users
-          </span>
-          <span>
-            <Lock size={18} />
-            Auth Layer
-          </span>
-          <span>
-            <Shield size={18} />
-            Policy Engine
-          </span>
-          <span>
-            <Server size={18} />
-            AI Agent
-          </span>
-          <span>
-            <Cloud size={18} />
-            Azure Cloud
-          </span>
+          <span><Users size={18} />Users</span>
+          <span><Lock size={18} />Auth Layer</span>
+          <span><Shield size={18} />Policy Engine</span>
+          <span><Server size={18} />AI Agent</span>
+          <span><Cloud size={18} />Azure Cloud</span>
         </div>
         <div className="audit-db-node">
-          <span>
-            <Database size={20} />
-          </span>
+          <span><Database size={20} /></span>
           <p>Audit Database</p>
         </div>
       </section>
@@ -219,7 +179,7 @@ export default function DashboardPage() {
       <section className="card">
         <h3>Threat Detection Timeline</h3>
         <p className="muted">Security threats detected and blocked over the last 6 hours.</p>
-        <div className="chart-shell">
+        <div className="chart-shell threat-row">
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={threatData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
@@ -227,14 +187,7 @@ export default function DashboardPage() {
               <YAxis stroke="#6B7280" />
               <Tooltip />
               <Legend />
-              <Line
-                type="monotone"
-                dataKey="threats"
-                stroke="#EF4444"
-                strokeWidth={2}
-                name="Threats Blocked"
-                dot={{ fill: '#EF4444', r: 4 }}
-              />
+              <Line type="monotone" dataKey="threats" stroke="#EF4444" strokeWidth={2} name="Threats Blocked" dot={{ fill: '#EF4444', r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -260,30 +213,13 @@ export default function DashboardPage() {
                   <td>{log[0]}</td>
                   <td>{log[1]}</td>
                   <td>{log[2]}</td>
-                  <td>
-                    <span className={log[3] === 'success' ? 'badge success' : 'badge danger'}>{log[3]}</span>
-                  </td>
+                  <td><span className={log[3] === 'success' ? 'badge success' : 'badge danger'}>{log[3]}</span></td>
                   <td>{log[4]}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </section>
-
-      <section className="cards-grid charts-grid compact-last-row">
-        <article className="card">
-          <h3>System Flow</h3>
-          <div className="flow-row">
-            <span>Users</span>
-            <span>Auth</span>
-            <span>Policy</span>
-            <span>Agent</span>
-            <span>Cloud</span>
-          </div>
-          <p className="muted">Every step is validated and logged to the audit database.</p>
-        </article>
-        <article className="card" />
       </section>
     </div>
   );

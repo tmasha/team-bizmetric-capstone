@@ -49,7 +49,6 @@ export default function LandingPage() {
         <div className="cards-grid">
           {features.map((feature) => {
             const Icon = feature.icon;
-
             return (
               <article key={feature.title} className="card feature-card">
                 <span className="feature-icon">
