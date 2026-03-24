@@ -1,11 +1,22 @@
+# React JS Interface
 
-  # UI Prototype
+This is the main JavaScript React prototype for the project.
 
-  This is a code bundle for UI Prototype. The original project is available at https://www.figma.com/design/OgcXIqrQxuPF1R3KXDXtWI/UI-Prototype.
+## Run
 
-  ## Running the code
+1. `npm install`
+2. `npm run dev`
 
-  Run `npm i` to install the dependencies.
+## Build
 
-  Run `npm run dev` to start the development server.
-  
+- `npm run build`
+
+## TypeScript Backup
+
+The original TypeScript prototype that was created with Figma has been moved to `typescript-backup`.
+
+To run it:
+
+1. `cd typescript-backup`
+2. `npm install`
+3. `npm run dev`

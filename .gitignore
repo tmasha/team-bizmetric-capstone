@@ -1,3 +1,4 @@
+
 # Dependencies
 node_modules/
 
@@ -33,4 +34,4 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.sw
