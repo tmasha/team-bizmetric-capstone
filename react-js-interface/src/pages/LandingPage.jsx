@@ -1,16 +1,20 @@
 import React from 'react';
+import { ArrowRight, FileText, Lock, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const features = [
   {
+    icon: Lock,
     title: 'Access Control',
     description: 'Role-based access control and identity verification for every agent interaction.',
   },
   {
+    icon: Shield,
     title: 'Policy Enforcement',
     description: 'Prompt and response checks that enforce security and compliance policies in real time.',
   },
   {
+    icon: FileText,
     title: 'Audit Logging',
     description: 'Full traceability for all actions, users, and policy decisions.',
   },
@@ -29,6 +33,7 @@ export default function LandingPage() {
         <div className="hero-actions hero-actions-center">
           <Link className="button primary" to="/chat">
             Launch Secure Agent
+            <ArrowRight size={16} />
           </Link>
           <Link className="button outline" to="/dashboard">
             View Dashboard
@@ -42,13 +47,19 @@ export default function LandingPage() {
           <p>Comprehensive governance capabilities designed for enterprise AI deployments.</p>
         </div>
         <div className="cards-grid">
-          {features.map((feature) => (
-            <article key={feature.title} className="card feature-card">
-              <span className="feature-icon">■</span>
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
-            </article>
-          ))}
+          {features.map((feature) => {
+            const Icon = feature.icon;
+
+            return (
+              <article key={feature.title} className="card feature-card">
+                <span className="feature-icon">
+                  <Icon size={20} />
+                </span>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
 

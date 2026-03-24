@@ -1,15 +1,62 @@
 import React from 'react';
-const metrics = [
-  { label: 'Active Sessions', value: '247', detail: '+12% from yesterday', tone: 'blue' },
-  { label: 'Policy Compliance', value: '98.7%', detail: 'All controls healthy', tone: 'green' },
-  { label: 'Threats Blocked', value: '19', detail: 'Last 24 hours', tone: 'red' },
-  { label: 'Audit Events', value: '3,046', detail: 'Today', tone: 'violet' },
+import {
+  Activity,
+  AlertTriangle,
+  CheckCircle2,
+  Cloud,
+  Database,
+  FileText,
+  Lock,
+  Server,
+  Shield,
+  Users,
+  XCircle,
+} from 'lucide-react';
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
+const authData = [
+  { time: '00:00', successful: 45, failed: 2 },
+  { time: '04:00', successful: 38, failed: 1 },
+  { time: '08:00', successful: 92, failed: 5 },
+  { time: '12:00', successful: 118, failed: 3 },
+  { time: '16:00', successful: 95, failed: 8 },
+  { time: '20:00', successful: 67, failed: 2 },
 ];
 
-const bars = [
-  { label: 'Allowed', value: 88 },
-  { label: 'Blocked', value: 7 },
-  { label: 'Flagged', value: 5 },
+const metrics = [
+  { label: 'Active Sessions', value: '247', detail: '+12% from yesterday', tone: 'blue', icon: Users },
+  { label: 'Policy Compliance', value: '98.7%', detail: 'All controls healthy', tone: 'green', icon: Shield },
+  { label: 'Threats Blocked', value: '19', detail: 'Last 24 hours', tone: 'red', icon: XCircle },
+  { label: 'Audit Events', value: '3,046', detail: 'Today', tone: 'violet', icon: FileText },
+];
+
+const policyData = [
+  { name: 'Allowed', value: 2847, color: '#10B981' },
+  { name: 'Blocked', value: 156, color: '#EF4444' },
+  { name: 'Flagged', value: 43, color: '#F59E0B' },
+];
+
+const threatData = [
+  { hour: '10:00', threats: 2 },
+  { hour: '11:00', threats: 1 },
+  { hour: '12:00', threats: 4 },
+  { hour: '13:00', threats: 3 },
+  { hour: '14:00', threats: 7 },
+  { hour: '15:00', threats: 2 },
 ];
 
 const logs = [
@@ -31,7 +78,10 @@ export default function DashboardPage() {
       </section>
 
       <section className="critical-alert">
-        <strong>Prompt Injection Attempt Blocked</strong>
+        <strong>
+          <AlertTriangle size={18} />
+          Prompt Injection Attempt Blocked
+        </strong>
         <p>
           At 14:22:08 UTC, a malicious prompt injection attempt from unknown@external.com was
           detected and blocked by policy enforcement.
@@ -39,16 +89,27 @@ export default function DashboardPage() {
       </section>
 
       <section className="cards-grid metrics-grid">
-        {metrics.map((metric) => (
-          <article key={metric.label} className="card metric-card">
-            <h3>{metric.label}</h3>
-            <div className="metric-main">
-              <strong>{metric.value}</strong>
-              <span className={`metric-icon ${metric.tone}`}>■</span>
-            </div>
-            <p>{metric.detail}</p>
-          </article>
-        ))}
+        {metrics.map((metric) => {
+          const Icon = metric.icon;
+
+          return (
+            <article key={metric.label} className="card metric-card">
+              <h3>{metric.label}</h3>
+              <div className="metric-main">
+                <strong>{metric.value}</strong>
+                <span className={`metric-icon ${metric.tone}`}>
+                  <Icon size={20} />
+                </span>
+              </div>
+              <p>
+                {metric.tone === 'green' && <CheckCircle2 size={14} />}
+                {metric.tone === 'red' && <AlertTriangle size={14} />}
+                {metric.tone === 'violet' && <Activity size={14} />}
+                {metric.detail}
+              </p>
+            </article>
+          );
+        })}
       </section>
 
       <section className="cards-grid charts-grid">
@@ -57,21 +118,67 @@ export default function DashboardPage() {
             <h3>Authentication Activity</h3>
             <p>Successful and failed authentication attempts</p>
           </div>
-          <div className="line-chart-placeholder" />
+          <div className="chart-shell">
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={authData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="time" stroke="#6B7280" />
+                <YAxis stroke="#6B7280" />
+                <Tooltip />
+                <Legend />
+                <Area
+                  type="monotone"
+                  dataKey="successful"
+                  stroke="#10B981"
+                  fill="#10B981"
+                  fillOpacity={0.45}
+                  name="Successful"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="failed"
+                  stroke="#EF4444"
+                  fill="#EF4444"
+                  fillOpacity={0.45}
+                  name="Failed"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </article>
 
         <article className="card">
           <h3>Policy Enforcement Distribution</h3>
-          <div className="bar-list">
-            {bars.map((bar) => (
-              <div key={bar.label} className="bar-item">
-                <span>{bar.label}</span>
-                <div className="bar-track">
-                  <div className="bar-fill" style={{ width: `${bar.value}%` }} />
+          <div className="chart-shell pie-wrap">
+            <ResponsiveContainer width="50%" height={280}>
+              <PieChart>
+                <Pie
+                  data={policyData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={52}
+                  outerRadius={92}
+                  paddingAngle={3}
+                  dataKey="value"
+                >
+                  {policyData.map((entry, index) => (
+                    <Cell key={`policy-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="policy-legend">
+              {policyData.map((item) => (
+                <div key={item.name} className="policy-item">
+                  <span className="policy-dot" style={{ backgroundColor: item.color }} />
+                  <div>
+                    <small>{item.name}</small>
+                    <strong>{item.value.toLocaleString()}</strong>
+                  </div>
                 </div>
-                <span>{bar.value}%</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </article>
       </section>
@@ -80,24 +187,56 @@ export default function DashboardPage() {
         <h3>System Architecture</h3>
         <p className="muted">Azure AI Governance Platform infrastructure overview.</p>
         <div className="flow-row architecture-row">
-          <span>Users</span>
-          <span>Auth Layer</span>
-          <span>Policy Engine</span>
-          <span>AI Agent</span>
-          <span>Azure Cloud</span>
+          <span>
+            <Users size={18} />
+            Users
+          </span>
+          <span>
+            <Lock size={18} />
+            Auth Layer
+          </span>
+          <span>
+            <Shield size={18} />
+            Policy Engine
+          </span>
+          <span>
+            <Server size={18} />
+            AI Agent
+          </span>
+          <span>
+            <Cloud size={18} />
+            Azure Cloud
+          </span>
+        </div>
+        <div className="audit-db-node">
+          <span>
+            <Database size={20} />
+          </span>
+          <p>Audit Database</p>
         </div>
       </section>
 
       <section className="card">
         <h3>Threat Detection Timeline</h3>
         <p className="muted">Security threats detected and blocked over the last 6 hours.</p>
-        <div className="threat-row">
-          <span style={{ '--h': 30 }}>10:00</span>
-          <span style={{ '--h': 22 }}>11:00</span>
-          <span style={{ '--h': 58 }}>12:00</span>
-          <span style={{ '--h': 44 }}>13:00</span>
-          <span style={{ '--h': 82 }}>14:00</span>
-          <span style={{ '--h': 36 }}>15:00</span>
+        <div className="chart-shell">
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={threatData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <XAxis dataKey="hour" stroke="#6B7280" />
+              <YAxis stroke="#6B7280" />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="threats"
+                stroke="#EF4444"
+                strokeWidth={2}
+                name="Threats Blocked"
+                dot={{ fill: '#EF4444', r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </section>
 
@@ -136,7 +275,7 @@ export default function DashboardPage() {
         <article className="card">
           <h3>System Flow</h3>
           <div className="flow-row">
-            <span>User</span>
+            <span>Users</span>
             <span>Auth</span>
             <span>Policy</span>
             <span>Agent</span>

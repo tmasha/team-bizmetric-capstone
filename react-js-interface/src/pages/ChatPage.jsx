@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CheckCircle2, Menu, Send, Shield, X } from 'lucide-react';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([
@@ -81,7 +82,10 @@ export default function ChatPage() {
           </p>
         </div>
         <div className="policy-ok">
-          <strong>All Policies Active</strong>
+          <strong>
+            <CheckCircle2 size={14} />
+            All Policies Active
+          </strong>
           <span>Your messages are monitored and protected.</span>
         </div>
       </aside>
@@ -95,7 +99,8 @@ export default function ChatPage() {
           <div className="chat-header-actions">
             <span className="online-pill">Online</span>
             <button className="button subtle" onClick={() => setSidebarOpen((v) => !v)} type="button">
-              {sidebarOpen ? 'Hide Panel' : 'Show Panel'}
+              {sidebarOpen ? <X size={16} /> : <Menu size={16} />}
+              <span>{sidebarOpen ? 'Hide Panel' : 'Show Panel'}</span>
             </button>
           </div>
         </div>
@@ -103,7 +108,11 @@ export default function ChatPage() {
         <div className="messages">
           {messages.map((message) => (
             <article key={message.id} className={message.role === 'user' ? 'message-row user' : 'message-row'}>
-              {message.role === 'assistant' && <span className="avatar assistant-avatar">S</span>}
+              {message.role === 'assistant' && (
+                <span className="avatar assistant-avatar">
+                  <Shield size={14} />
+                </span>
+              )}
               <div className={message.role === 'user' ? 'message user' : 'message assistant'}>
                 <p>{message.content}</p>
                 <time>{message.time}</time>
@@ -122,7 +131,8 @@ export default function ChatPage() {
             placeholder="Type your secure message"
           />
           <button className="button primary" onClick={sendMessage} type="button">
-            Send
+            <Send size={16} />
+            <span>Send</span>
           </button>
         </div>
         <p className="compliance-note">All messages are encrypted and logged for compliance.</p>
