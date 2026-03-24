@@ -34,4 +34,6 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln
-*.sw
+*.sw?
+
+CLAUDE.md
