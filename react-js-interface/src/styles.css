@@ -283,6 +283,18 @@ h2 {
   padding: 36px 28px;
 }
 
+.landing-footer {
+  padding: 8px 0 24px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.landing-footer p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
 .stat {
   text-align: center;
   color: #ffffff;

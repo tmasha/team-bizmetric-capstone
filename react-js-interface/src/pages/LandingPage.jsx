@@ -77,6 +77,10 @@ export default function LandingPage() {
           <span>Policy Check Latency</span>
         </div>
       </section>
+
+      <footer className="landing-footer">
+        <p>© 2026 Azure AI Governance Platform. Powered by Microsoft Azure.</p>
+      </footer>
     </div>
   );
 }
