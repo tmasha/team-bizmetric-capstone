@@ -10,22 +10,27 @@ const links = [
 export default function Navbar() {
   return (
     <header className="navbar">
-      <div className="brand">
-        <span className="brand-mark">AI</span>
-        <span>Azure AI Governance</span>
+      <div className="navbar-left">
+        <div className="brand">
+          <span className="brand-mark">S</span>
+          <span>Azure AI Governance</span>
+        </div>
+        <nav className="nav-links">
+          {links.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
       </div>
-      <nav className="nav-links">
-        {links.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-          >
-            {link.label}
-          </NavLink>
-        ))}
-      </nav>
-      <div className="status-pill">Secure and Operational</div>
+      <div className="status-pill">
+        <span className="status-dot" />
+        <span>Secure and Operational</span>
+      </div>
     </header>
   );
 }

@@ -50,12 +50,39 @@ export default function ChatPage() {
   return (
     <div className="chat-layout">
       <aside className={sidebarOpen ? 'chat-sidebar open' : 'chat-sidebar'}>
-        <h3>Conversation</h3>
+        <div className="sidebar-block">
+          <h3>Conversation History</h3>
+          <button className="list-item" type="button">
+            <strong>New Chat</strong>
+            <span>Start a secure conversation</span>
+          </button>
+          <button className="list-item active" type="button">
+            <strong>Current Session</strong>
+            <span>Active now</span>
+          </button>
+        </div>
         <div className="session-card">
-          <p>Messages: {messages.length}</p>
-          <p>Status: Active</p>
-          <p>Encryption: AES-256</p>
-          <p>Compliance: Verified</p>
+          <h4>Session Info</h4>
+          <p>
+            <span>Messages</span>
+            <strong>{messages.length}</strong>
+          </p>
+          <p>
+            <span>Status</span>
+            <strong className="ok">Active</strong>
+          </p>
+          <p>
+            <span>Encryption</span>
+            <strong>AES-256</strong>
+          </p>
+          <p>
+            <span>Compliance</span>
+            <strong className="ok">Verified</strong>
+          </p>
+        </div>
+        <div className="policy-ok">
+          <strong>All Policies Active</strong>
+          <span>Your messages are monitored and protected.</span>
         </div>
       </aside>
 
@@ -63,18 +90,25 @@ export default function ChatPage() {
         <div className="chat-header">
           <div>
             <h2>Secure AI Agent</h2>
-            <p>Protected by Azure security controls</p>
+            <p>Protected by Azure Security</p>
           </div>
-          <button className="button" onClick={() => setSidebarOpen((v) => !v)} type="button">
-            {sidebarOpen ? 'Hide Panel' : 'Show Panel'}
-          </button>
+          <div className="chat-header-actions">
+            <span className="online-pill">Online</span>
+            <button className="button subtle" onClick={() => setSidebarOpen((v) => !v)} type="button">
+              {sidebarOpen ? 'Hide Panel' : 'Show Panel'}
+            </button>
+          </div>
         </div>
 
         <div className="messages">
           {messages.map((message) => (
-            <article key={message.id} className={message.role === 'user' ? 'message user' : 'message assistant'}>
-              <p>{message.content}</p>
-              <time>{message.time}</time>
+            <article key={message.id} className={message.role === 'user' ? 'message-row user' : 'message-row'}>
+              {message.role === 'assistant' && <span className="avatar assistant-avatar">S</span>}
+              <div className={message.role === 'user' ? 'message user' : 'message assistant'}>
+                <p>{message.content}</p>
+                <time>{message.time}</time>
+              </div>
+              {message.role === 'user' && <span className="avatar user-avatar">U</span>}
             </article>
           ))}
         </div>
@@ -91,6 +125,7 @@ export default function ChatPage() {
             Send
           </button>
         </div>
+        <p className="compliance-note">All messages are encrypted and logged for compliance.</p>
       </section>
     </div>
   );

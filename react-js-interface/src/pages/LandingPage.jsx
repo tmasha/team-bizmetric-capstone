@@ -18,34 +18,41 @@ const features = [
 
 export default function LandingPage() {
   return (
-    <div className="page-wrap">
-      <section className="hero">
+    <div className="page-wrap landing-wrap">
+      <section className="hero hero-centered">
         <p className="eyebrow">Enterprise AI Security on Azure</p>
         <h1>Secure Agentic AI Governance Platform</h1>
         <p className="hero-copy">
-          A clean JavaScript React version of the interface with straightforward structure,
-          simpler styling, and easy-to-maintain components.
+          Enterprise-grade security and governance for AI agents. Built on Microsoft Azure with
+          comprehensive access controls, policy enforcement, and compliance monitoring.
         </p>
-        <div className="hero-actions">
+        <div className="hero-actions hero-actions-center">
           <Link className="button primary" to="/chat">
             Launch Secure Agent
           </Link>
-          <Link className="button" to="/dashboard">
+          <Link className="button outline" to="/dashboard">
             View Dashboard
           </Link>
         </div>
       </section>
 
-      <section className="cards-grid">
-        {features.map((feature) => (
-          <article key={feature.title} className="card">
-            <h3>{feature.title}</h3>
-            <p>{feature.description}</p>
-          </article>
-        ))}
+      <section className="section-block">
+        <div className="section-head">
+          <h2>Enterprise Security Features</h2>
+          <p>Comprehensive governance capabilities designed for enterprise AI deployments.</p>
+        </div>
+        <div className="cards-grid">
+          {features.map((feature) => (
+            <article key={feature.title} className="card feature-card">
+              <span className="feature-icon">■</span>
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
-      <section className="stats-row">
+      <section className="stats-row stats-prominent">
         <div className="stat">
           <strong>99.9%</strong>
           <span>Uptime SLA</span>
