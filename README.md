@@ -1,6 +1,6 @@
-# React JS Interface (Simplified)
+# React JS Interface
 
-This is the main JavaScript React app for this repository.
+This is the main JavaScript React prototype for the project.
 
 ## Run
 
