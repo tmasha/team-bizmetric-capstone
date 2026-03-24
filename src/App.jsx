@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router';
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import ChatPage from './pages/ChatPage';

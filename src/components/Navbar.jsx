@@ -1,11 +1,11 @@
-import React from 'react';
-import { BarChart3, Home, Lock, MessageSquare, Shield } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { BarChart3, Home, Lock, MessageSquare, Shield } from "lucide-react";
+import { NavLink } from "react-router";
 
 const links = [
-  { to: '/', label: 'Home', icon: Home },
-  { to: '/chat', label: 'Secure Chat', icon: MessageSquare },
-  { to: '/dashboard', label: 'Dashboard', icon: BarChart3 },
+  { to: "/", label: "Home", icon: Home },
+  { to: "/chat", label: "Secure Chat", icon: MessageSquare },
+  { to: "/dashboard", label: "Dashboard", icon: BarChart3 },
 ];
 
 export default function Navbar() {
@@ -22,7 +22,13 @@ export default function Navbar() {
           {links.map((link) => {
             const Icon = link.icon;
             return (
-              <NavLink key={link.to} to={link.to} className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  isActive ? "nav-link active" : "nav-link"
+                }
+              >
                 <Icon size={15} />
                 <span>{link.label}</span>
               </NavLink>

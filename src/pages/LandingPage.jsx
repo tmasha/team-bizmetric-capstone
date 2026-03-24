@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, FileText, Lock, Shield } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const features = [
   {
