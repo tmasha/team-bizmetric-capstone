@@ -13,7 +13,7 @@ This is the main JavaScript React app for this repository.
 
 ## TypeScript Backup
 
-The original TypeScript app has been moved to `typescript-backup`.
+The original TypeScript prototype that was created with Figma has been moved to `typescript-backup`.
 
 To run it:
 
