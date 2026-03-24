@@ -1,5 +1,5 @@
-import React from "react";
-import { BarChart3, Home, Lock, MessageSquare, Shield } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BarChart3, Home, Lock, MessageSquare, Moon, Shield, Sun } from "lucide-react";
 import { NavLink } from "react-router";
 
 const links = [
@@ -9,6 +9,15 @@ const links = [
 ];
 
 export default function Navbar() {
+  const [dark, setDark] = useState(
+    () => localStorage.getItem("theme") === "dark"
+  );
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  }, [dark]);
+
   return (
     <header className="navbar">
       <div className="navbar-left">
@@ -36,10 +45,19 @@ export default function Navbar() {
           })}
         </nav>
       </div>
-      <div className="status-pill">
-        <Lock size={13} />
-        <span className="status-dot" />
-        <span>Secure and Operational</span>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <button
+          className="theme-toggle"
+          onClick={() => setDark((d) => !d)}
+          aria-label="Toggle dark mode"
+        >
+          {dark ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
+        <div className="status-pill">
+          <Lock size={13} />
+          <span className="status-dot" />
+          <span>Secure and Operational</span>
+        </div>
       </div>
     </header>
   );

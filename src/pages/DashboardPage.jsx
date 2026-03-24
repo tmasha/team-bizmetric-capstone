@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Activity,
   AlertTriangle,
@@ -44,10 +44,15 @@ const metrics = [
   { label: 'Audit Events', value: '3,046', detail: 'Today', tone: 'violet', icon: FileText },
 ];
 
-const policyData = [
-  { name: 'Allowed', value: 2847, color: '#10B981' },
-  { name: 'Blocked', value: 156, color: '#EF4444' },
-  { name: 'Flagged', value: 43, color: '#F59E0B' },
+const policyDataLight = [
+  { name: 'Allowed', value: 2847, color: '#22c55e' },
+  { name: 'Blocked', value: 156, color: '#dc2626' },
+  { name: 'Flagged', value: 43, color: '#f97316' },
+];
+const policyDataDark = [
+  { name: 'Allowed', value: 2847, color: '#4ade80' },
+  { name: 'Blocked', value: 156, color: '#f87171' },
+  { name: 'Flagged', value: 43, color: '#fb923c' },
 ];
 
 const threatData = [
@@ -76,7 +81,35 @@ const logs = [
   ['2026-03-24 14:18:55', 'developer@contoso.com', 'API Access', 'success', 'Agent API key validated'],
 ];
 
+function useDarkMode() {
+  const [dark, setDark] = useState(
+    () => document.documentElement.getAttribute('data-theme') === 'dark'
+  );
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setDark(document.documentElement.getAttribute('data-theme') === 'dark');
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+  return dark;
+}
+
 export default function DashboardPage() {
+  const dark = useDarkMode();
+  const gridColor = dark ? '#30363d' : '#E5E7EB';
+  const axisColor = dark ? '#c9d1d9' : '#6B7280';
+  const greenColor = dark ? '#4ade80' : '#22c55e';
+  const redColor = dark ? '#f87171' : '#dc2626';
+  const policyData = dark ? policyDataDark : policyDataLight;
+  const tooltipStyle = {
+    backgroundColor: dark ? '#1c2230' : '#ffffff',
+    border: `1px solid ${gridColor}`,
+    color: dark ? '#f0f6fc' : '#111827',
+  };
+  const tooltipTextStyle = { color: dark ? '#f0f6fc' : '#111827' };
+  const legendStyle = { color: axisColor };
+
   return (
     <div className="page-wrap">
       <section className="dashboard-title-row">
@@ -129,13 +162,13 @@ export default function DashboardPage() {
           <div className="chart-shell">
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart data={authData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis dataKey="time" stroke="#6B7280" />
-                <YAxis stroke="#6B7280" />
-                <Tooltip />
-                <Legend />
-                <Area type="monotone" dataKey="successful" stroke="#10B981" fill="#10B981" fillOpacity={0.45} name="Successful" />
-                <Area type="monotone" dataKey="failed" stroke="#EF4444" fill="#EF4444" fillOpacity={0.45} name="Failed" />
+                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                <XAxis dataKey="time" stroke={axisColor} tick={{ fill: axisColor }} />
+                <YAxis stroke={axisColor} tick={{ fill: axisColor }} />
+                <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipTextStyle} labelStyle={tooltipTextStyle} />
+                <Legend wrapperStyle={legendStyle} />
+                <Area type="monotone" dataKey="successful" stroke={greenColor} fill={greenColor} fillOpacity={0.35} name="Successful" />
+                <Area type="monotone" dataKey="failed" stroke={redColor} fill={redColor} fillOpacity={0.35} name="Failed" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -151,7 +184,7 @@ export default function DashboardPage() {
                     <Cell key={`policy-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipTextStyle} labelStyle={tooltipTextStyle} />
               </PieChart>
             </ResponsiveContainer>
             <div className="policy-legend">
@@ -195,12 +228,12 @@ export default function DashboardPage() {
         <div className="chart-shell threat-row">
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={threatData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-              <XAxis dataKey="hour" stroke="#6B7280" />
-              <YAxis stroke="#6B7280" />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="threats" stroke="#EF4444" strokeWidth={2} name="Threats Blocked" dot={{ fill: '#EF4444', r: 4 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+              <XAxis dataKey="hour" stroke={axisColor} tick={{ fill: axisColor }} />
+              <YAxis stroke={axisColor} tick={{ fill: axisColor }} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Legend wrapperStyle={legendStyle} />
+              <Line type="monotone" dataKey="threats" stroke={redColor} strokeWidth={2} name="Threats Blocked" dot={{ fill: redColor, r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
