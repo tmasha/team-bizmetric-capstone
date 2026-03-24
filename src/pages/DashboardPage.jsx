@@ -2,8 +2,8 @@ import React from 'react';
 import {
   Activity,
   AlertTriangle,
-  CheckCircle2,
   Cloud,
+  CheckCircle2,
   Database,
   FileText,
   Lock,
@@ -57,6 +57,15 @@ const threatData = [
   { hour: '13:00', threats: 3 },
   { hour: '14:00', threats: 7 },
   { hour: '15:00', threats: 2 },
+];
+
+const architectureNodes = [
+  { label: 'Users', tone: 'gray', icon: Users },
+  { label: 'Auth Layer', tone: 'blue', icon: Lock },
+  { label: 'Policy Engine', tone: 'green', icon: Shield },
+  { label: 'AI Agent', tone: 'violet', icon: Server },
+  { label: 'Azure Cloud', tone: 'blue', icon: Cloud },
+  { label: 'Audit Database', tone: 'orange', icon: Database },
 ];
 
 const logs = [
@@ -163,16 +172,20 @@ export default function DashboardPage() {
       <section className="card">
         <h3>System Architecture</h3>
         <p className="muted">Azure AI Governance Platform infrastructure overview.</p>
-        <div className="flow-row architecture-row">
-          <span><Users size={18} />Users</span>
-          <span><Lock size={18} />Auth Layer</span>
-          <span><Shield size={18} />Policy Engine</span>
-          <span><Server size={18} />AI Agent</span>
-          <span><Cloud size={18} />Azure Cloud</span>
-        </div>
-        <div className="audit-db-node">
-          <span><Database size={20} /></span>
-          <p>Audit Database</p>
+        <div className="architecture-flow">
+          {architectureNodes.map((node, index) => {
+            const Icon = node.icon;
+
+            return (
+              <React.Fragment key={node.label}>
+                <div className={`arch-node ${node.tone}`}>
+                  <Icon size={22} className="arch-icon" />
+                  <span>{node.label}</span>
+                </div>
+                {index < architectureNodes.length - 1 && <span className="arch-arrow">→</span>}
+              </React.Fragment>
+            );
+          })}
         </div>
       </section>
 
