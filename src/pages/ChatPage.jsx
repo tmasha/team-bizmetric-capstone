@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Menu, Send, Shield, X } from 'lucide-react';
+import { CheckCircle2, Send, Shield } from 'lucide-react';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([
@@ -12,7 +12,6 @@ export default function ChatPage() {
     },
   ]);
   const [input, setInput] = useState('');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   function sendMessage() {
     if (!input.trim()) return;
@@ -50,7 +49,7 @@ export default function ChatPage() {
 
   return (
     <div className="chat-layout">
-      <aside className={sidebarOpen ? 'chat-sidebar open' : 'chat-sidebar'}>
+      <aside className="chat-sidebar open">
         <div className="sidebar-block">
           <h3>Conversation History</h3>
           <button className="list-item" type="button">
@@ -98,10 +97,6 @@ export default function ChatPage() {
           </div>
           <div className="chat-header-actions">
             <span className="online-pill">Online</span>
-            <button className="button subtle" onClick={() => setSidebarOpen((v) => !v)} type="button">
-              {sidebarOpen ? <X size={16} /> : <Menu size={16} />}
-              <span>{sidebarOpen ? 'Hide Panel' : 'Show Panel'}</span>
-            </button>
           </div>
         </div>
 
