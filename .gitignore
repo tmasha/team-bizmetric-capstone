@@ -1,3 +1,4 @@
 node_modules
 dist
 typescript-backup/dist
+typescript-backup/node_modules
