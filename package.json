@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "backend:dev": "python3 backend/run.py",
+    "test:backend": "python3 -m unittest discover -s backend/tests -t . -p 'test_*.py'",
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
