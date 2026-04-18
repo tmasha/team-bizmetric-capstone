@@ -1,0 +1,73 @@
+<!--
+  Template only.
+  Replace every {{placeholder}} before applying in APIM.
+  Keep the policy order aligned with the project plan:
+  validate-azure-ad-token -> validate-content -> rate-limit-by-key -> set-header -> set-backend-service
+-->
+<policies>
+  <inbound>
+    <base />
+
+    <validate-azure-ad-token
+      tenant-id="{{entra-tenant-id}}"
+      failed-validation-httpcode="401"
+      failed-validation-error-message="Unauthorized">
+      <client-application-ids>
+        <application-id>{{bizmetric-ui-spa-client-id}}</application-id>
+      </client-application-ids>
+      <audiences>
+        <audience>api://{{bizmetric-api-app-id}}</audience>
+      </audiences>
+    </validate-azure-ad-token>
+
+    <validate-content
+      unspecified-content-type-action="prevent"
+      max-size="102400"
+      size-exceeded-action="prevent">
+      <content type="application/json" validate-as="json" action="prevent" />
+    </validate-content>
+
+    <rate-limit-by-key
+      calls="60"
+      renewal-period="60"
+      counter-key="{{rate-limit-counter-expression}}" />
+
+    <set-header name="x-apim-authenticated" exists-action="override">
+      <value>true</value>
+    </set-header>
+
+    <set-header name="x-request-id" exists-action="override">
+      <value>{{request-id-expression}}</value>
+    </set-header>
+
+    <set-header name="x-user-object-id" exists-action="override">
+      <value>{{user-object-id-expression}}</value>
+    </set-header>
+
+    <set-header name="x-user-email" exists-action="override">
+      <value>{{user-email-expression}}</value>
+    </set-header>
+
+    <set-header name="x-user-roles" exists-action="override">
+      <value>{{user-roles-expression}}</value>
+    </set-header>
+
+    <set-header name="x-apim-shared-secret" exists-action="override">
+      <value>{{backend-shared-secret}}</value>
+    </set-header>
+
+    <set-backend-service base-url="https://{{app-service-name}}.azurewebsites.net" />
+  </inbound>
+
+  <backend>
+    <base />
+  </backend>
+
+  <outbound>
+    <base />
+  </outbound>
+
+  <on-error>
+    <base />
+  </on-error>
+</policies>
