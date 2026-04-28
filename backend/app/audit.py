@@ -103,10 +103,13 @@ def get_session_events(session_id: str) -> list[dict]:
 
 
 def parse_window(window: str) -> timedelta:
-    if window.endswith("h"):
-        return timedelta(hours=int(window[:-1]))
-    if window.endswith("d"):
-        return timedelta(days=int(window[:-1]))
+    try:
+        if window.endswith("h"):
+            return timedelta(hours=int(window[:-1]))
+        if window.endswith("d"):
+            return timedelta(days=int(window[:-1]))
+    except ValueError:
+        return timedelta(hours=24)
     return timedelta(hours=24)
 
 

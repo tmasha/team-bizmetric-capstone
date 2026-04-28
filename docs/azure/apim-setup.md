@@ -39,11 +39,17 @@ Enable:
 - system-assigned managed identity
 - Application Insights
 - environment variables matching [backend/.env.example](/mnt/c/CSCE_482/ui-prototype/backend/.env.example)
+- startup command: `gunicorn --bind 0.0.0.0:$PORT backend.run:app`
 
 In shared environments:
 
 - set `ALLOW_DEV_AUTH=false`
 - set a real `APIM_SHARED_SECRET`
+- set `CHAT_PROVIDER=azure_openai`
+- set `MCP_TRANSPORT=remote`
+- set either `AZURE_OPENAI_API_KEY` or grant the App Service managed identity access to Azure OpenAI
+- set `MCP_SERVER_CONFIG` or the `MCP_BUSINESS_READ_URL` / `MCP_SENSITIVE_ACTION_URL` variables
+- set `AZURE_MONITOR_CONNECTION_STRING` so backend traces, request metrics, and log correlation flow to Azure Monitor
 
 ## 4. Import the API into APIM
 
@@ -98,6 +104,7 @@ Configure API-level diagnostics to:
 - Log Analytics
 
 Keep payload logging minimal. The backend already emits request IDs and audit-event IDs so APIM requests can be correlated with backend traces.
+The backend also returns `x-request-id` on responses so frontend, APIM, and App Service telemetry can be stitched together.
 
 ## 9. Sponsor-ready hardening
 

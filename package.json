@@ -4,8 +4,16 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "backend:dev": "python3 backend/run.py",
-    "test:backend": "python3 -m unittest discover -s backend/tests -t . -p 'test_*.py'",
+    "backend:dev": "python backend/run.py",
+    "test": "npm run test:all",
+    "test:all": "npm run test:backend && npm run test:frontend",
+    "test:backend": "python -m unittest discover -s backend/tests -t . -p \"test_*.py\"",
+    "test:backend:coverage": "python -m coverage run -m unittest discover -s backend/tests -t . -p \"test_*.py\"",
+    "coverage:backend": "python -m coverage report -m",
+    "coverage:backend:html": "python -m coverage html",
+    "test:frontend": "vitest run",
+    "coverage:frontend": "vitest run --coverage",
+    "coverage:all": "python -m coverage erase && python -m coverage run -m unittest discover -s backend/tests -t . -p \"test_*.py\" && python -m coverage report -m && python -m coverage html && vitest run --coverage",
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
@@ -69,9 +77,15 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.12",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "4.7.0",
+    "@vitest/coverage-v8": "^2.1.9",
+    "jsdom": "^26.1.0",
     "tailwindcss": "4.1.12",
-    "vite": "^6.4.1"
+    "vite": "^6.4.1",
+    "vitest": "^2.1.9"
   },
   "peerDependencies": {
     "react": "18.3.1",
