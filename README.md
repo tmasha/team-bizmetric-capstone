@@ -1,11 +1,6 @@
 # BizMetric UI + Flask Control Plane
 
-This repository now contains:
-
-- the React frontend prototype
-- a Flask backend control plane under `backend/`
-- in-process MCP protocol servers for read-only and sensitive-tool demo flows
-- security tests and Azure APIM configuration artifacts
+This capstone project involves designing, implementing, and security-testing a production-grade enterprise AI agent infrastructure. The goal is to build a secure, scalable platform that allows AI agents to safely interact with enterprise systems and data under strict security controls. The final deliverable is a reusable, client-agnostic AI security backbone validated against modern attack vectors such as prompt injection, tool abuse, privilege escalation, and data exfiltration.
 
 ## Local development
 
