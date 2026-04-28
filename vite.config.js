@@ -7,6 +7,16 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      setupFiles: './src/test/setup.js',
+      coverage: {
+        reporter: ['text', 'html'],
+        reportsDirectory: './coverage-frontend',
+        include: ['src/**/*.{js,jsx}'],
+      },
+    },
     server: {
       proxy: {
         '/api': {

@@ -1,4 +1,4 @@
-from backend.app.mcp_protocol import MCPProtocolError
+from backend.app.mcp_protocol import MCPProtocolError, RemoteMCPClient
 from backend.app.mcp_servers import build_mcp_clients
 from backend.tests.helpers import BackendTestCase
 
@@ -23,3 +23,17 @@ class MCPSecurityTests(BackendTestCase):
                 },
                 context={"domain": "demo"},
             )
+
+    def test_remote_mcp_clients_can_be_constructed_from_config(self):
+        clients = build_mcp_clients(
+            {
+                "MCP_TRANSPORT": "remote",
+                "MCP_SHARED_SECRET": "shared-secret",
+                "MCP_BUSINESS_READ_URL": "https://mcp.internal/business-read",
+                "MCP_SENSITIVE_ACTION_URL": "https://mcp.internal/sensitive-action",
+            }
+        )
+
+        self.assertIsInstance(clients["business-read"], RemoteMCPClient)
+        self.assertEqual(clients["business-read"].url, "https://mcp.internal/business-read")
+        self.assertEqual(clients["business-read"].shared_secret, "shared-secret")

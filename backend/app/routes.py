@@ -10,6 +10,7 @@ from werkzeug.exceptions import BadRequest, HTTPException, NotFound
 from backend.app.audit import create_audit_event, get_session_events, get_session_messages, load_dashboard_metrics
 from backend.app.auth import load_user_context
 from backend.app.db import get_db, utcnow_iso
+from backend.app.monitoring import emit_event
 from backend.app.openapi import build_openapi_spec
 from backend.app.policies import DOMAINS, TOOL_RULES, analyze_message, evaluate_policy, list_tool_access
 from backend.app.providers import get_chat_provider
@@ -103,12 +104,21 @@ def before_request():
 def health():
     db = get_db()
     db.execute("SELECT 1").fetchone()
+    mcp_clients = current_app.extensions.get("mcp_clients", {})
+    monitoring = current_app.extensions.get("monitoring", {})
     return jsonify(
         {
             "status": "ok",
             "service": current_app.config["APP_NAME"],
             "version": current_app.config["VERSION"],
             "environment": current_app.config["ENVIRONMENT"],
+            "chatProvider": current_app.config["CHAT_PROVIDER"],
+            "mcpTransport": current_app.config["MCP_TRANSPORT"],
+            "mcpServers": sorted(mcp_clients.keys()),
+            "monitoring": {
+                "enabled": monitoring.get("enabled", False),
+                "provider": monitoring.get("provider", "none"),
+            },
             "database": {"ready": True, "path": current_app.config["DATABASE_PATH"]},
         }
     )
@@ -244,6 +254,19 @@ def chat():
             },
             prompt_text=message,
         )
+    )
+
+    emit_event(
+        current_app,
+        "chat_turn_completed",
+        request_id=request_id,
+        session_id=session["id"],
+        decision=decision,
+        domain=domain,
+        role=g.user_context.primary_role,
+        requested_tool=intent.requested_tool,
+        audit_event_ids=audit_event_ids,
+        tool_execution_count=len(tool_executions),
     )
 
     return jsonify(
